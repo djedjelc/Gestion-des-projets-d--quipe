@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: mon-backend
+    env: node
+    plan: free
+    buildCommand: cd backend && npm install
+    startCommand: node server.js
+    rootDir: backend
+    envVars:
+      - key: NODE_ENV
+        value: production
