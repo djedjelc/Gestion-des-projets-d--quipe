@@ -6,7 +6,6 @@ function getAuthHeader() {
   };
 }
 
-
 async function getUsers() {
   try {
     const response = await fetch(`${API_URL}/users`, {

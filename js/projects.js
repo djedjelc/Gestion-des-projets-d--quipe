@@ -5,7 +5,6 @@ function getAuthHeader() {
   };
 }
 
-
 function getAuthHeaderJSON() {
   const token = localStorage.getItem('token');
   return {
@@ -13,7 +12,6 @@ function getAuthHeaderJSON() {
     'Authorization': `Bearer ${token}`
   };
 }
-
 
 async function getProjects() {
   try {
@@ -35,7 +33,6 @@ async function getProjects() {
   }
 }
 
-
 async function getProject(projectId) {
   try {
     const response = await fetch(`${API_URL}/projects/${projectId}`, {
@@ -55,7 +52,6 @@ async function getProject(projectId) {
     throw error;
   }
 }
-
 
 async function createProject(formData) {
   try {
