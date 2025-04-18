@@ -2,7 +2,7 @@ const API_URL = window.location.hostname === 'localhost'
   ? 'http://localhost:5000/api'
   : 'https://gestion-des-projets-d-equipe.onrender.com/api';
 
-// Fonction pour s'inscrire
+
 async function register(userData) {
   try {
     const response = await fetch(`${API_URL}/auth/register`, {
@@ -19,11 +19,11 @@ async function register(userData) {
       throw new Error(data.message || 'Erreur lors de l\'inscription');
     }
 
-    // Stocker le token
+    
     localStorage.setItem('token', data.token);
     localStorage.setItem('user', JSON.stringify(data.user));
 
-    // Redirection selon le rôle
+    
     redirectBasedOnRole(data.user.role);
 
     return data;
@@ -33,7 +33,7 @@ async function register(userData) {
   }
 }
 
-// Fonction pour se connecter
+
 async function login(credentials) {
   try {
     const response = await fetch(`${API_URL}/auth/login`, {
@@ -50,36 +50,36 @@ async function login(credentials) {
       throw new Error(data.message || data.error || 'Erreur de connexion');
     }
 
-    // Stocker le token
+    
     localStorage.setItem('token', data.token);
     
-    // Vérifier où se trouvent les données utilisateur dans la réponse
+    
     let userData;
     if (data.user) {
       userData = data.user;
     } else if (data.data) {
       userData = data.data;
     } else {
-      // Si aucune donnée utilisateur n'est trouvée, créer un objet utilisateur minimal
-      // basé sur la réponse du serveur ou les informations d'authentification
+      
+      
       userData = {
         email: credentials.email,
-        role: data.role || 'user' // Utiliser le rôle de la réponse ou 'user' par défaut
+        role: data.role || 'user' 
       };
       console.warn('Aucune donnée utilisateur trouvée dans la réponse API, création de données minimales');
     }
     
     console.log('Données utilisateur identifiées:', userData);
     
-    // Stocker les données utilisateur
+    
     localStorage.setItem('user', JSON.stringify(userData));
 
-    // Redirection selon le rôle (si disponible)
+    
     if (userData && userData.role) {
       redirectBasedOnRole(userData.role);
     } else {
       console.error('Aucun rôle utilisateur trouvé pour la redirection');
-      window.location.href = 'userDashboard.html'; // Redirection par défaut
+      window.location.href = 'userDashboard.html'; 
     }
 
     return data;
@@ -89,19 +89,19 @@ async function login(credentials) {
   }
 }
 
-// Fonction pour se déconnecter
+
 function logout() {
   localStorage.removeItem('token');
   localStorage.removeItem('user');
   window.location.href = 'login.html';
 }
 
-// Vérifier si l'utilisateur est connecté
+
 function isAuthenticated() {
   return localStorage.getItem('token') !== null;
 }
 
-// Rediriger en fonction du rôle
+
 function redirectBasedOnRole(role) {
   console.log('Redirection basée sur le rôle:', role);
   
@@ -121,21 +121,21 @@ function redirectBasedOnRole(role) {
   }
 }
 
-// Obtenir les infos de l'utilisateur connecté
+
 function getCurrentUser() {
   const userJSON = localStorage.getItem('user');
   if (!userJSON) return null;
   return JSON.parse(userJSON);
 }
 
-// Protection des pages - à exécuter au chargement des pages protégées
+
 function protectPage() {
   if (!isAuthenticated()) {
     window.location.href = 'login.html';
     return;
   }
   
-  // For admin-only pages, check role
+  
   const user = getCurrentUser();
   const isAdminPage = document.body.classList.contains('admin-dashboard');
   const isUserPage = document.body.classList.contains('user-dashboard');
@@ -147,7 +147,7 @@ function protectPage() {
   }
 }
 
-// Gestion du formulaire d'inscription
+
 if (document.getElementById('registerForm')) {
   document.getElementById('registerForm').addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -161,7 +161,7 @@ if (document.getElementById('registerForm')) {
       name: document.getElementById('fullName').value,
       email: document.getElementById('email').value,
       password: document.getElementById('password').value,
-      role: 'user' // Default role for registration
+      role: 'user'
     };
 
     try {
@@ -175,7 +175,7 @@ if (document.getElementById('registerForm')) {
   });
 }
 
-// Gestion du formulaire de connexion
+
 if (document.getElementById('loginForm')) {
   document.getElementById('loginForm').addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -201,9 +201,9 @@ if (document.getElementById('loginForm')) {
   });
 }
 
-// Gestion des boutons de déconnexion
+
 document.addEventListener('DOMContentLoaded', () => {
-  // Ajout d'événements de déconnexion si les boutons existent
+  
   const logoutButtons = document.querySelectorAll('.logout-btn');
   logoutButtons.forEach(button => {
     button.addEventListener('click', (e) => {

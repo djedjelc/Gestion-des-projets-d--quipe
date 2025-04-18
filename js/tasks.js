@@ -1,7 +1,3 @@
-// URL de l'API est déjà définie dans auth.js
-// Pas besoin de redéclarer API_URL
-
-// Fonction pour obtenir l'en-tête d'autorisation
 function getAuthHeader() {
   const token = localStorage.getItem('token');
   return {
@@ -10,7 +6,7 @@ function getAuthHeader() {
   };
 }
 
-// Récupérer toutes les tâches
+
 async function getTasks() {
   try {
     const response = await fetch(`${API_URL}/tasks`, {
@@ -31,7 +27,7 @@ async function getTasks() {
   }
 }
 
-// Récupérer les tâches d'un projet spécifique
+
 async function getProjectTasks(projectId) {
   try {
     const response = await fetch(`${API_URL}/projects/${projectId}/tasks`, {
@@ -52,7 +48,7 @@ async function getProjectTasks(projectId) {
   }
 }
 
-// Récupérer une tâche spécifique
+
 async function getTask(taskId) {
   try {
     const response = await fetch(`${API_URL}/tasks/${taskId}`, {
@@ -73,7 +69,7 @@ async function getTask(taskId) {
   }
 }
 
-// Créer une nouvelle tâche
+
 async function createTask(projectId, taskData) {
   try {
     const response = await fetch(`${API_URL}/projects/${projectId}/tasks`, {
@@ -95,7 +91,7 @@ async function createTask(projectId, taskData) {
   }
 }
 
-// Mettre à jour une tâche
+
 async function updateTask(taskId, taskData) {
   try {
     const response = await fetch(`${API_URL}/tasks/${taskId}`, {
@@ -117,7 +113,7 @@ async function updateTask(taskId, taskData) {
   }
 }
 
-// Supprimer une tâche
+
 async function deleteTask(taskId) {
   try {
     const response = await fetch(`${API_URL}/tasks/${taskId}`, {
@@ -138,7 +134,7 @@ async function deleteTask(taskId) {
   }
 }
 
-// Afficher la liste des tâches dans le HTML
+
 function displayTasks(tasks, containerId) {
   const container = document.getElementById(containerId);
   if (!container) return;
@@ -203,29 +199,29 @@ function displayTasks(tasks, containerId) {
     container.appendChild(taskItem);
   });
 
-  // Ajouter les écouteurs d'événements
+  
   addTaskButtonListeners();
 }
 
-// Ajouter les écouteurs d'événements aux boutons de tâche
+
 function addTaskButtonListeners() {
-  // Boutons Éditer
+  
   document.querySelectorAll('.edit-task-btn').forEach(button => {
     button.addEventListener('click', async (e) => {
       const taskId = e.target.dataset.id;
-      // Implémenter la logique d'édition selon les besoins
+      
       console.log(`Éditer tâche ${taskId}`);
     });
   });
 
-  // Boutons Supprimer
+  
   document.querySelectorAll('.delete-task-btn').forEach(button => {
     button.addEventListener('click', async (e) => {
       if (confirm('Êtes-vous sûr de vouloir supprimer cette tâche?')) {
         const taskId = e.target.dataset.id;
         try {
           await deleteTask(taskId);
-          // Rafraîchir la liste
+          
           loadTasks();
         } catch (error) {
           alert('Erreur lors de la suppression: ' + error.message);
@@ -235,7 +231,7 @@ function addTaskButtonListeners() {
   });
 }
 
-// Charger toutes les tâches
+
 async function loadTasks() {
   try {
     const tasks = await getTasks();
@@ -246,7 +242,7 @@ async function loadTasks() {
   }
 }
 
-// Charger les tâches d'un projet spécifique
+
 async function loadProjectTasks(projectId) {
   try {
     const tasks = await getProjectTasks(projectId);
@@ -257,14 +253,14 @@ async function loadProjectTasks(projectId) {
   }
 }
 
-// Gestionnaire pour le formulaire de création de tâche
+
 document.addEventListener('DOMContentLoaded', () => {
   const taskForm = document.getElementById('task-form');
   if (taskForm) {
     taskForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       
-      // Récupérer l'ID du projet depuis l'URL ou d'un champ caché
+      
       const projectId = document.getElementById('project-id').value || 
                         new URLSearchParams(window.location.search).get('projectId');
       
@@ -284,10 +280,10 @@ document.addEventListener('DOMContentLoaded', () => {
       try {
         await createTask(projectId, taskData);
         alert('Tâche créée avec succès!');
-        // Masquer le formulaire et recharger les tâches
+        
         document.getElementById('task-form-section').classList.add('hidden');
         loadProjectTasks(projectId);
-        // Réinitialiser le formulaire
+        
         taskForm.reset();
       } catch (error) {
         alert('Erreur lors de la création de la tâche: ' + error.message);
@@ -295,12 +291,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Charger les tâches au chargement de la page si le conteneur existe
+  
   if (document.getElementById('tasks-container')) {
     loadTasks();
   }
   
-  // Charger les tâches d'un projet spécifique si le conteneur existe
+  
   if (document.getElementById('project-tasks-container')) {
     const projectId = new URLSearchParams(window.location.search).get('id');
     if (projectId) {

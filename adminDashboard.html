@@ -111,30 +111,23 @@
     <script src="./js/projects.js"></script>
     <script src="./js/tasks.js"></script>
     <script>
-      // Protection de la page
       document.addEventListener('DOMContentLoaded', function() {
-        // Vérifier si l'utilisateur est connecté
         protectPage();
         
-        // Vérifier le rôle de l'utilisateur
         const user = getCurrentUser();
         if (user && user.role !== 'admin') {
           window.location.href = user.role === 'responsable' ? 'dashboard.html' : 'userDashboard.html';
         }
         
-        // Afficher le nom de l'admin
         if (user) {
           document.getElementById('admin-greeting').textContent = `Bienvenue, ${user.name} 👑`;
         }
         
-        // Charger les statistiques
         loadDashboardStats();
       });
       
-      // Fonction pour récupérer et afficher les statistiques du dashboard
       async function loadDashboardStats() {
         try {
-          // Récupérer le nombre de projets
           getProjects().then(projects => {
             document.getElementById('projects-count').textContent = projects.length;
           }).catch(error => {
@@ -142,7 +135,6 @@
             console.error('Erreur lors du chargement des projets:', error);
           });
           
-          // Récupérer le nombre d'utilisateurs
           getUsers().then(users => {
             document.getElementById('users-count').textContent = users.length;
           }).catch(error => {
@@ -150,11 +142,9 @@
             console.error('Erreur lors du chargement des utilisateurs:', error);
           });
           
-          // Récupérer le nombre de tâches et de tâches en retard
           getTasks().then(tasks => {
             document.getElementById('tasks-count').textContent = tasks.length;
             
-            // Compter les tâches en retard
             const lateTasks = tasks.filter(task => task.status === 'En retard');
             document.getElementById('late-tasks-count').textContent = lateTasks.length;
           }).catch(error => {

@@ -72,12 +72,12 @@ exports.getProject = async (req, res) => {
   }
 };
 
-// @desc    Create new project
-// @route   POST /api/projects
-// @access  Private/Responsable-Admin
+
+
+
 exports.createProject = async (req, res) => {
   try {
-    // Add owner to req.body
+    
     req.body.owner = req.user.id;
 
     const project = await Project.create(req.body);
@@ -94,9 +94,9 @@ exports.createProject = async (req, res) => {
   }
 };
 
-// @desc    Update project
-// @route   PUT /api/projects/:id
-// @access  Private/Owner-Admin
+
+
+
 exports.updateProject = async (req, res) => {
   try {
     let project = await Project.findById(req.params.id);
@@ -132,9 +132,9 @@ exports.updateProject = async (req, res) => {
   }
 };
 
-// @desc    Delete project
-// @route   DELETE /api/projects/:id
-// @access  Private/Owner-Admin
+
+
+
 exports.deleteProject = async (req, res) => {
   try {
     const project = await Project.findById(req.params.id);
@@ -146,7 +146,7 @@ exports.deleteProject = async (req, res) => {
       });
     }
 
-    // Make sure user is project owner or admin
+    
     if (project.owner.toString() !== req.user.id && req.user.role !== 'admin') {
       return res.status(403).json({
         success: false,
@@ -168,9 +168,9 @@ exports.deleteProject = async (req, res) => {
   }
 };
 
-// @desc    Add member to project
-// @route   PUT /api/projects/:id/members
-// @access  Private/Owner-Admin
+
+
+
 exports.addProjectMember = async (req, res) => {
   try {
     const { userId } = req.body;
@@ -191,7 +191,7 @@ exports.addProjectMember = async (req, res) => {
       });
     }
 
-    // Make sure user is project owner or admin
+    
     if (project.owner.toString() !== req.user.id && req.user.role !== 'admin') {
       return res.status(403).json({
         success: false,
@@ -199,7 +199,7 @@ exports.addProjectMember = async (req, res) => {
       });
     }
 
-    // Check if user exists
+    
     const user = await User.findById(userId);
 
     if (!user) {
@@ -209,7 +209,7 @@ exports.addProjectMember = async (req, res) => {
       });
     }
 
-    // Check if user is already a member
+    
     if (project.members.includes(userId)) {
       return res.status(400).json({
         success: false,
@@ -217,7 +217,7 @@ exports.addProjectMember = async (req, res) => {
       });
     }
 
-    // Add user to members
+    
     project.members.push(userId);
     await project.save();
 

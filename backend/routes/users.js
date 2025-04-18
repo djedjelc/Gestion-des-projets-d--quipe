@@ -11,9 +11,9 @@ const { protect, authorize } = require('../middlewares/auth');
 
 const router = express.Router();
 
-// Protect all routes
+
 router.use(protect);
-// Limit to admin
+
 router.use(authorize('admin'));
 
 router.route('/')

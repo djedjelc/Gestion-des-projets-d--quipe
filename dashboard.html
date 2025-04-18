@@ -127,38 +127,30 @@
     <script src="./js/tasks.js"></script>
     <script>
 
-      // Protection de la page
       document.addEventListener('DOMContentLoaded', function() {
-        // Vérifier si l'utilisateur est connecté
         protectPage();
         
-        // Vérifier le rôle de l'utilisateur
         const user = getCurrentUser();
         if (user && user.role !== 'responsable' && user.role !== 'admin') {
           window.location.href = 'userDashboard.html';
         }
 
-        // Vérifier si on a un projet à éditer via l'URL (venant de la page de détails)
         const urlParams = new URLSearchParams(window.location.search);
         const editProjectId = urlParams.get('edit');
         if (editProjectId) {
-          // Charger le projet à éditer
           loadProjectForEdit(editProjectId);
         }
       });
 
-      // Toggle formulaire projet pour création
       document.getElementById("new-project-btn").addEventListener("click", () => {
         resetProjectForm();
         document.getElementById("project-form-section").classList.remove("hidden");
       });
 
-      // Annuler l'édition
       document.getElementById("cancel-btn").addEventListener("click", () => {
         document.getElementById("project-form-section").classList.add("hidden");
       });
 
-      // Réinitialiser le formulaire pour un nouveau projet
       function resetProjectForm() {
         document.getElementById("form-title").textContent = "Créer un nouveau projet";
         document.getElementById("submit-btn").textContent = "✅ Créer le projet";
@@ -167,27 +159,19 @@
         document.getElementById("project-description").value = "";
         document.getElementById("project-deadline").value = "";
         document.getElementById("project-progress").value = "0";
-        // L'input file ne peut pas être réinitialisé programmatiquement pour des raisons de sécurité
-        // On doit utiliser reset() sur le formulaire entier
-        //document.getElementById("project-form").reset();
       }
 
-      // Charger le projet à éditer dans le formulaire
       window.loadProjectForEdit = async function(projectId) {
         try {
-          // Charger les détails du projet
           const project = await getProject(projectId);
           
-          // Mettre à jour le titre et le bouton du formulaire
           document.getElementById("form-title").textContent = "Modifier le projet";
           document.getElementById("submit-btn").textContent = "✅ Mettre à jour";
           
-          // Remplir le formulaire avec les données du projet
           document.getElementById("project-id").value = projectId;
           document.getElementById("project-name").value = project.name;
           document.getElementById("project-description").value = project.description;
           
-          // Formater la date pour l'input date
           if (project.deadline) {
             const deadlineDate = new Date(project.deadline);
             const formattedDate = deadlineDate.toISOString().split('T')[0];
@@ -196,7 +180,6 @@
           
           document.getElementById("project-progress").value = project.progress || 0;
           
-          // Afficher le formulaire
           document.getElementById("project-form-section").classList.remove("hidden");
         } catch (error) {
           console.error("Erreur lors du chargement du projet:", error);

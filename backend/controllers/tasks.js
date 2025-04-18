@@ -1,19 +1,19 @@
 const Task = require('../models/Task');
 const Project = require('../models/Project');
 
-// @desc    Get all tasks
-// @route   GET /api/tasks
-// @route   GET /api/projects/:projectId/tasks
-// @access  Private
+
+
+
+
 exports.getTasks = async (req, res) => {
   try {
     let query;
 
     if (req.params.projectId) {
-      // Get tasks for a specific project
+      
       query = Task.find({ project: req.params.projectId });
     } else {
-      // If user is not admin, only get tasks assigned to them or created by them
+      
       if (req.user.role !== 'admin') {
         query = Task.find({
           $or: [
@@ -26,7 +26,7 @@ exports.getTasks = async (req, res) => {
       }
     }
 
-    // Populate references
+    
     query = query.populate([
       { path: 'project', select: 'name' },
       { path: 'assignedTo', select: 'name email' },
@@ -48,9 +48,9 @@ exports.getTasks = async (req, res) => {
   }
 };
 
-// @desc    Get single task
-// @route   GET /api/tasks/:id
-// @access  Private
+
+
+
 exports.getTask = async (req, res) => {
   try {
     const task = await Task.findById(req.params.id).populate([
@@ -66,11 +66,11 @@ exports.getTask = async (req, res) => {
       });
     }
 
-    // Make sure user has access to the task
-    // Admin can access any task
-    // Task creator can access the task
-    // Task assignee can access the task
-    // Project owner/member can access the task
+    
+    
+    
+    
+    
     if (
       req.user.role !== 'admin' &&
       task.createdBy._id.toString() !== req.user.id &&
@@ -96,9 +96,9 @@ exports.getTask = async (req, res) => {
   }
 };
 
-// @desc    Create task
-// @route   POST /api/projects/:projectId/tasks
-// @access  Private/Owner-Admin-Responsable
+
+
+
 exports.createTask = async (req, res) => {
   try {
     req.body.project = req.params.projectId;
@@ -113,7 +113,7 @@ exports.createTask = async (req, res) => {
       });
     }
 
-    // Only project owner, members or admin can create tasks
+    
     if (
       project.owner.toString() !== req.user.id &&
       !project.members.includes(req.user.id) &&
@@ -139,9 +139,9 @@ exports.createTask = async (req, res) => {
   }
 };
 
-// @desc    Update task
-// @route   PUT /api/tasks/:id
-// @access  Private
+
+
+
 exports.updateTask = async (req, res) => {
   try {
     let task = await Task.findById(req.params.id).populate({
@@ -156,7 +156,7 @@ exports.updateTask = async (req, res) => {
       });
     }
 
-    // Check if user can update task (owner, creator, admin)
+    
     if (
       req.user.role !== 'admin' &&
       task.createdBy.toString() !== req.user.id &&
@@ -189,9 +189,9 @@ exports.updateTask = async (req, res) => {
   }
 };
 
-// @desc    Delete task
-// @route   DELETE /api/tasks/:id
-// @access  Private
+
+
+
 exports.deleteTask = async (req, res) => {
   try {
     const task = await Task.findById(req.params.id).populate({
@@ -206,7 +206,7 @@ exports.deleteTask = async (req, res) => {
       });
     }
 
-    // Check if user can delete task (owner, creator, admin)
+    
     if (
       req.user.role !== 'admin' &&
       task.createdBy.toString() !== req.user.id &&

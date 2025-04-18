@@ -109,12 +109,9 @@
     <script src="./js/projects.js"></script>
     <script src="./js/tasks.js"></script>
     <script>
-      // Protection de la page
       document.addEventListener('DOMContentLoaded', async function() {
-        // Vérifier si l'utilisateur est connecté
         protectPage();
         
-        // Récupérer l'ID du projet depuis l'URL
         const urlParams = new URLSearchParams(window.location.search);
         const projectId = urlParams.get('id');
         
@@ -125,23 +122,18 @@
         }
         
         try {
-          // Charger les détails du projet
           const project = await getProject(projectId);
           
-          // Cacher l'indicateur de chargement
           document.getElementById('loading-indicator').classList.add('hidden');
           
-          // Afficher les détails du projet
           document.getElementById('project-content').classList.remove('hidden');
           document.getElementById('project-name').textContent = project.name;
           document.getElementById('project-description').textContent = project.description || 'Aucune description disponible';
           
-          // Afficher l'image du projet si disponible
           if (project.image) {
             document.getElementById('project-image').src = project.image;
           }
           
-          // Formater et afficher la date limite
           if (project.deadline) {
             const deadlineDate = new Date(project.deadline);
             document.getElementById('project-deadline').textContent = deadlineDate.toLocaleDateString('fr-FR');
@@ -149,20 +141,16 @@
             document.getElementById('project-deadline').textContent = 'Non spécifiée';
           }
           
-          // Afficher la progression
           const progress = project.progress || 0;
           document.getElementById('project-progress').textContent = `${progress}% complété`;
           document.getElementById('project-progress-bar').style.width = `${progress}%`;
           
-          // Charger les tâches du projet
           loadProjectTasks(projectId);
           
-          // Gérer le bouton d'édition
           document.getElementById('edit-project-btn').addEventListener('click', () => {
             window.location.href = `dashboard.html?edit=${projectId}`;
           });
           
-          // Gérer le bouton de suppression
           document.getElementById('delete-project-btn').addEventListener('click', async () => {
             if (confirm('Êtes-vous sûr de vouloir supprimer ce projet?')) {
               try {

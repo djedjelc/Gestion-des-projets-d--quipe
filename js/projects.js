@@ -1,7 +1,3 @@
-// URL de l'API est déjà définie dans auth.js
-// Pas besoin de redéclarer API_URL
-
-// Fonction pour obtenir l'en-tête d'autorisation (sans Content-Type pour FormData)
 function getAuthHeader() {
   const token = localStorage.getItem('token');
   return {
@@ -9,7 +5,7 @@ function getAuthHeader() {
   };
 }
 
-// Fonction pour obtenir l'en-tête d'autorisation avec Content-Type JSON
+
 function getAuthHeaderJSON() {
   const token = localStorage.getItem('token');
   return {
@@ -18,7 +14,7 @@ function getAuthHeaderJSON() {
   };
 }
 
-// Récupérer tous les projets
+
 async function getProjects() {
   try {
     const response = await fetch(`${API_URL}/projects`, {
@@ -39,7 +35,7 @@ async function getProjects() {
   }
 }
 
-// Récupérer un projet spécifique
+
 async function getProject(projectId) {
   try {
     const response = await fetch(`${API_URL}/projects/${projectId}`, {
@@ -60,12 +56,12 @@ async function getProject(projectId) {
   }
 }
 
-// Créer un nouveau projet (avec support d'image)
+
 async function createProject(formData) {
   try {
     const response = await fetch(`${API_URL}/projects`, {
       method: 'POST',
-      headers: getAuthHeader(), // Sans Content-Type pour FormData
+      headers: getAuthHeader(), 
       body: formData
     });
 
@@ -82,7 +78,7 @@ async function createProject(formData) {
   }
 }
 
-// Créer un nouveau projet avec JSON (sans images)
+
 async function createProjectJSON(projectData) {
   try {
     const response = await fetch(`${API_URL}/projects`, {
@@ -104,7 +100,7 @@ async function createProjectJSON(projectData) {
   }
 }
 
-// Mettre à jour un projet
+
 async function updateProject(projectId, projectData) {
   try {
     const response = await fetch(`${API_URL}/projects/${projectId}`, {
@@ -126,7 +122,7 @@ async function updateProject(projectId, projectData) {
   }
 }
 
-// Supprimer un projet
+
 async function deleteProject(projectId) {
   try {
     const response = await fetch(`${API_URL}/projects/${projectId}`, {
@@ -147,7 +143,7 @@ async function deleteProject(projectId) {
   }
 }
 
-// Ajouter un membre à un projet
+
 async function addProjectMember(projectId, userId) {
   try {
     const response = await fetch(`${API_URL}/projects/${projectId}/members`, {
@@ -169,7 +165,7 @@ async function addProjectMember(projectId, userId) {
   }
 }
 
-// Afficher la liste des projets dans le HTML
+
 function displayProjects(projects, containerId) {
   const container = document.getElementById(containerId);
   if (!container) return;
@@ -204,13 +200,13 @@ function displayProjects(projects, containerId) {
     container.appendChild(projectCard);
   });
 
-  // Ajouter les écouteurs d'événements
+  
   addProjectButtonListeners();
 }
 
-// Ajouter les écouteurs d'événements aux boutons de projet
+
 function addProjectButtonListeners() {
-  // Boutons Voir
+  
   document.querySelectorAll('.view-project-btn').forEach(button => {
     button.addEventListener('click', (e) => {
       const projectId = e.target.dataset.id;
@@ -218,7 +214,7 @@ function addProjectButtonListeners() {
     });
   });
 
-  // Boutons Éditer
+  
   document.querySelectorAll('.edit-project-btn').forEach(button => {
     button.addEventListener('click', (e) => {
       const projectId = e.target.dataset.id;
@@ -230,14 +226,14 @@ function addProjectButtonListeners() {
     });
   });
 
-  // Boutons Supprimer
+  
   document.querySelectorAll('.delete-project-btn').forEach(button => {
     button.addEventListener('click', async (e) => {
       if (confirm('Êtes-vous sûr de vouloir supprimer ce projet?')) {
         const projectId = e.target.dataset.id;
         try {
           await deleteProject(projectId);
-          // Rafraîchir la liste
+          
           loadProjects();
         } catch (error) {
           alert('Erreur lors de la suppression: ' + error.message);
@@ -247,7 +243,7 @@ function addProjectButtonListeners() {
   });
 }
 
-// Charger tous les projets
+
 async function loadProjects() {
   try {
     const projects = await getProjects();
@@ -258,18 +254,18 @@ async function loadProjects() {
   }
 }
 
-// Gestion du formulaire de création/édition de projet
+
 document.addEventListener('DOMContentLoaded', () => {
   const projectForm = document.getElementById('project-form');
   if (projectForm) {
     projectForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       
-      // Récupérer l'ID du projet (pour édition)
+      
       const projectId = document.getElementById('project-id').value;
       const isEditing = projectId !== '';
       
-      // Créer un objet JavaScript standard pour les données du projet
+      
       const projectData = {
         name: document.getElementById('project-name').value,
         description: document.getElementById('project-description').value,
@@ -279,34 +275,34 @@ document.addEventListener('DOMContentLoaded', () => {
       };
       
       try {
-        // Afficher un message de chargement
+        
         const submitBtn = document.getElementById('submit-btn') || projectForm.querySelector('button[type="submit"]');
         const originalBtnText = submitBtn.innerHTML;
         submitBtn.innerHTML = isEditing ? '⏳ Mise à jour...' : '⏳ Création en cours...';
         submitBtn.disabled = true;
         
         if (isEditing) {
-          // Mode édition
+          
           await updateProject(projectId, projectData);
           alert('Projet mis à jour avec succès!');
         } else {
-          // Mode création
+          
           await createProjectJSON(projectData);
           alert('Projet créé avec succès!');
         }
         
-        // Masquer le formulaire et recharger les projets
+        
         document.getElementById('project-form-section').classList.add('hidden');
         loadProjects();
         
-        // Réinitialiser les champs du formulaire
+        
         document.getElementById('project-name').value = '';
         document.getElementById('project-description').value = '';
         document.getElementById('project-deadline').value = '';
         document.getElementById('project-progress').value = '0';
         document.getElementById('project-id').value = '';
         
-        // Restaurer le bouton
+        
         submitBtn.innerHTML = originalBtnText;
         submitBtn.disabled = false;
       } catch (error) {
@@ -318,7 +314,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Charger les projets au chargement de la page si le conteneur existe
+  
   if (document.getElementById('projects-container')) {
     loadProjects();
   }

@@ -1,7 +1,3 @@
-// URL de l'API est déjà définie dans auth.js
-// Pas besoin de redéclarer API_URL
-
-// Fonction pour obtenir l'en-tête d'autorisation
 function getAuthHeader() {
   const token = localStorage.getItem('token');
   return {
@@ -10,7 +6,7 @@ function getAuthHeader() {
   };
 }
 
-// Récupérer tous les utilisateurs (admin seulement)
+
 async function getUsers() {
   try {
     const response = await fetch(`${API_URL}/users`, {
@@ -31,7 +27,7 @@ async function getUsers() {
   }
 }
 
-// Récupérer un utilisateur spécifique (admin seulement)
+
 async function getUser(userId) {
   try {
     const response = await fetch(`${API_URL}/users/${userId}`, {
@@ -52,7 +48,7 @@ async function getUser(userId) {
   }
 }
 
-// Créer un nouvel utilisateur (admin seulement)
+
 async function createUser(userData) {
   try {
     const response = await fetch(`${API_URL}/users`, {
@@ -74,7 +70,7 @@ async function createUser(userData) {
   }
 }
 
-// Mettre à jour un utilisateur (admin seulement)
+
 async function updateUser(userId, userData) {
   try {
     const response = await fetch(`${API_URL}/users/${userId}`, {
@@ -96,7 +92,7 @@ async function updateUser(userId, userData) {
   }
 }
 
-// Supprimer un utilisateur (admin seulement)
+
 async function deleteUser(userId) {
   try {
     const response = await fetch(`${API_URL}/users/${userId}`, {
@@ -117,7 +113,7 @@ async function deleteUser(userId) {
   }
 }
 
-// Afficher la liste des utilisateurs dans le HTML
+
 function displayUsers(users, containerId) {
   const container = document.getElementById(containerId);
   if (!container) return;
@@ -129,11 +125,11 @@ function displayUsers(users, containerId) {
     return;
   }
 
-  // Créer la table
+  
   const table = document.createElement('table');
   table.className = 'w-full table-auto';
   
-  // En-tête
+  
   const thead = document.createElement('thead');
   thead.innerHTML = `
     <tr class="bg-gray-100 text-left">
@@ -145,7 +141,7 @@ function displayUsers(users, containerId) {
   `;
   table.appendChild(thead);
   
-  // Corps
+  
   const tbody = document.createElement('tbody');
   
   users.forEach(user => {
@@ -168,29 +164,29 @@ function displayUsers(users, containerId) {
   table.appendChild(tbody);
   container.appendChild(table);
 
-  // Ajouter les écouteurs d'événements
+  
   addUserButtonListeners();
 }
 
-// Ajouter les écouteurs d'événements aux boutons utilisateur
+
 function addUserButtonListeners() {
-  // Boutons Éditer
+  
   document.querySelectorAll('.edit-user-btn').forEach(button => {
     button.addEventListener('click', (e) => {
       const userId = e.target.dataset.id;
-      // Logique d'édition - peut être implémentée selon les besoins
+      
       console.log(`Éditer utilisateur ${userId}`);
     });
   });
 
-  // Boutons Supprimer
+  
   document.querySelectorAll('.delete-user-btn').forEach(button => {
     button.addEventListener('click', async (e) => {
       if (confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur?')) {
         const userId = e.target.dataset.id;
         try {
           await deleteUser(userId);
-          // Rafraîchir la liste
+          
           loadUsers();
         } catch (error) {
           alert('Erreur lors de la suppression: ' + error.message);
@@ -200,7 +196,7 @@ function addUserButtonListeners() {
   });
 }
 
-// Charger tous les utilisateurs
+
 async function loadUsers() {
   try {
     const users = await getUsers();
@@ -211,13 +207,13 @@ async function loadUsers() {
   }
 }
 
-// Gestion du formulaire d'ajout d'utilisateur (admin dashboard)
+
 document.addEventListener('DOMContentLoaded', () => {
-  // Protection des pages admin
+  
   if (document.body.classList.contains('admin-dashboard')) {
     protectPage();
     
-    // Vérifier le rôle de l'utilisateur
+    
     const user = getCurrentUser();
     if (user && user.role !== 'admin') {
       window.location.href = user.role === 'responsable' ? 'dashboard.html' : 'userDashboard.html';
@@ -240,7 +236,7 @@ document.addEventListener('DOMContentLoaded', () => {
         await createUser(userData);
         alert('Utilisateur créé avec succès!');
         userForm.reset();
-        // Recharger la liste des utilisateurs
+        
         loadUsers();
       } catch (error) {
         alert('Erreur lors de la création de l\'utilisateur: ' + error.message);
@@ -248,7 +244,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Charger les utilisateurs au chargement de la page si le conteneur existe
+  
   if (document.getElementById('users-container')) {
     loadUsers();
   }

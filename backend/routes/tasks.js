@@ -11,7 +11,7 @@ const { protect } = require('../middlewares/auth');
 
 const router = express.Router({ mergeParams: true });
 
-// Protect all routes
+
 router.use(protect);
 
 router.route('/')

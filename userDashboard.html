@@ -93,23 +93,17 @@
     <script src="./js/projects.js"></script>
     <script src="./js/tasks.js"></script>
     <script>
-      // Protection de la page
       document.addEventListener('DOMContentLoaded', function() {
-        // Vérifier si l'utilisateur est connecté
         protectPage();
         
-        // Obtenir les informations de l'utilisateur
         const user = getCurrentUser();
         if (user) {
-          // Afficher le nom de l'utilisateur
           document.getElementById('user-name').textContent = `Bonjour, ${user.name}`;
           
-          // Remplir le formulaire de profil
           document.getElementById('profile-name').value = user.name;
           document.getElementById('profile-email').value = user.email;
         }
         
-        // Toggle formulaire de profil
         document.getElementById("edit-profile-btn").addEventListener("click", () => {
           document.getElementById("profile-form").classList.toggle("hidden");
         });
