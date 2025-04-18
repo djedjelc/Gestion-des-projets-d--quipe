@@ -1,5 +1,6 @@
-// URL de l'API
-const API_URL = 'http://localhost:5000/api';
+const API_URL = window.location.hostname === 'localhost'
+  ? 'http://localhost:5000/api'
+  : 'https://gestion-des-projets-d-equipe.onrender.com/api';
 
 // Fonction pour s'inscrire
 async function register(userData) {
