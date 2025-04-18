@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Connexion</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="./js/auth.js" defer></script>
+    <style>
+      @keyframes fade-in {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .animate-fade-in {
+        animation: fade-in 0.6s ease-out;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-600 to-blue-500">
+    <div class="animate-fade-in backdrop-blur-md bg-white/10 rounded-2xl shadow-xl p-8 w-full max-w-sm text-white">
+      <h2 class="text-3xl font-bold text-center mb-6">Log in</h2>
+      <form id="loginForm" class="space-y-4">
+        <input
+          type="email"
+          id="email"
+          placeholder="Email address"
+          required
+          class="transition-all duration-300 w-full px-4 py-2 rounded-md bg-white/20 text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-white/50"
+        />
+        <input
+          type="password"
+          id="password"
+          placeholder="Password"
+          required
+          class="transition-all duration-300 w-full px-4 py-2 rounded-md bg-white/20 text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-white/50"
+        />
+        <button
+          type="submit"
+          class="transition-all duration-300 w-full py-2 rounded-md bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-semibold hover:opacity-90 hover:scale-105"
+        >
+          Log in
+        </button>
+      </form>
+      <p class="text-sm mt-4 text-center text-white/80">
+        Don't have an account?
+        <a href="register.html" class="underline hover:text-white">Sign up</a>
+      </p>
+      <p id="errorMessage" class="text-red-300 mt-2 text-sm text-center hidden"></p>
+    </div>
+  </body>
+</html>

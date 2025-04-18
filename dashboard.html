@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard - Responsable de Projet</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: "#7C3AED",
+              accent: "#4F46E5",
+              background: "#F9FAFB",
+              card: "#FFFFFF",
+              text: "#1F2937",
+              sidebar: "#5B21B6",
+              hoverbg: "#6D28D9",
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body class="bg-background text-text font-sans">
+    <div class="min-h-screen flex flex-col md:flex-row">
+      <!-- Sidebar -->
+      <aside class="md:w-64 w-full bg-sidebar text-white p-6 space-y-10 shadow-lg">
+        <div class="text-3xl font-extrabold tracking-tight text-center">Responsable</div>
+        <nav class="space-y-4">
+          <a href="#" class="flex items-center gap-2 py-2 px-4 rounded-lg hover:bg-hoverbg transition font-medium">
+            📁 <span>Projets</span>
+          </a>
+          <a href="#" class="flex items-center gap-2 py-2 px-4 rounded-lg hover:bg-hoverbg transition font-medium">
+            👥 <span>Équipe</span>
+          </a>
+          <a href="#" class="flex items-center gap-2 py-2 px-4 rounded-lg hover:bg-hoverbg transition font-medium">
+            📝 <span>Tâches</span>
+          </a>
+          <a href="#" class="flex items-center gap-2 py-2 px-4 rounded-lg hover:bg-hoverbg transition font-medium">
+            ⚙️ <span>Compte</span>
+          </a>
+          <a href="#" class="flex items-center gap-2 py-2 px-4 rounded-lg hover:bg-hoverbg transition font-medium logout-btn">
+            🚪 <span>Déconnexion</span>
+          </a>
+        </nav>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="flex-1 p-6 space-y-10">
+        <div class="flex justify-between items-center flex-wrap gap-4">
+          <h1 class="text-4xl font-extrabold">Tableau de bord</h1>
+          <button id="new-project-btn" class="bg-primary hover:bg-accent text-white py-2 px-6 rounded-xl shadow-md transition-all">
+            ➕ Nouveau projet
+          </button>
+        </div>
+
+        <!-- Formulaire Création/Édition Projet -->
+        <section id="project-form-section" class="hidden">
+          <div class="bg-card rounded-2xl shadow-lg p-6 space-y-4">
+            <h2 id="form-title" class="text-2xl font-semibold">Créer un nouveau projet</h2>
+            <form id="project-form" class="grid gap-4">
+              <input type="hidden" id="project-id" value="" />
+              <div>
+                <label for="project-name" class="block text-sm font-medium">Nom du projet</label>
+                <input type="text" id="project-name" class="w-full p-3 rounded-lg border border-gray-300 bg-background" placeholder="Nom du projet" required />
+              </div>
+              <div>
+                <label for="project-description" class="block text-sm font-medium">Description</label>
+                <textarea id="project-description" class="w-full p-3 rounded-lg border border-gray-300 bg-background" rows="4" placeholder="Description du projet" required></textarea>
+              </div>
+              <div>
+                <label for="project-deadline" class="block text-sm font-medium">Date limite</label>
+                <input type="date" id="project-deadline" class="w-full p-3 rounded-lg border border-gray-300 bg-background" required />
+              </div>
+              
+              <div>
+                <label for="project-progress" class="block text-sm font-medium">Progression (%)</label>
+                <input type="number" id="project-progress" min="0" max="100" class="w-full p-3 rounded-lg border border-gray-300 bg-background" value="0" />
+              </div>
+              <div class="flex gap-2">
+                <button type="submit" id="submit-btn" class="bg-accent text-white py-2 px-6 rounded-lg hover:bg-primary transition shadow">
+                  ✅ Créer le projet
+                </button>
+                <button type="button" id="cancel-btn" class="bg-gray-300 text-gray-700 py-2 px-6 rounded-lg hover:bg-gray-400 transition shadow">
+                  ❌ Annuler
+                </button>
+              </div>
+            </form>
+          </div>
+        </section>
+
+        <!-- Projets en cours -->
+        <section>
+          <h2 class="text-2xl font-bold mb-4">📂 Projets en cours</h2>
+          <div id="projects-container" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Les projets seront injectés ici par JavaScript -->
+            <div class="text-center p-12">Chargement des projets...</div>
+          </div>
+        </section>
+
+        <!-- Équipe et Tâches -->
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="bg-card p-6 rounded-2xl shadow">
+            <h2 class="text-xl font-semibold mb-4">👥 Membres du projet</h2>
+            <ul class="space-y-3">
+              <li class="bg-gray-100 p-3 rounded-lg font-medium">John Doe - Chef d'équipe</li>
+              <li class="bg-gray-100 p-3 rounded-lg font-medium">Jane Smith - Designer</li>
+              <li class="bg-gray-100 p-3 rounded-lg font-medium">Bob Johnson - Développeur</li>
+            </ul>
+          </div>
+          <div class="bg-card p-6 rounded-2xl shadow">
+            <h2 class="text-xl font-semibold mb-4">📝 Tâches assignées</h2>
+            <ul id="tasks-container" class="space-y-3">
+              <!-- Les tâches seront injectées ici par JavaScript -->
+              <li class="text-center p-4">Chargement des tâches...</li>
+            </ul>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- JS Scripts -->
+    <script src="./js/auth.js"></script>
+    <script src="./js/projects.js"></script>
+    <script src="./js/tasks.js"></script>
+    <script>
+
+      // Protection de la page
+      document.addEventListener('DOMContentLoaded', function() {
+        // Vérifier si l'utilisateur est connecté
+        protectPage();
+        
+        // Vérifier le rôle de l'utilisateur
+        const user = getCurrentUser();
+        if (user && user.role !== 'responsable' && user.role !== 'admin') {
+          window.location.href = 'userDashboard.html';
+        }
+
+        // Vérifier si on a un projet à éditer via l'URL (venant de la page de détails)
+        const urlParams = new URLSearchParams(window.location.search);
+        const editProjectId = urlParams.get('edit');
+        if (editProjectId) {
+          // Charger le projet à éditer
+          loadProjectForEdit(editProjectId);
+        }
+      });
+
+      // Toggle formulaire projet pour création
+      document.getElementById("new-project-btn").addEventListener("click", () => {
+        resetProjectForm();
+        document.getElementById("project-form-section").classList.remove("hidden");
+      });
+
+      // Annuler l'édition
+      document.getElementById("cancel-btn").addEventListener("click", () => {
+        document.getElementById("project-form-section").classList.add("hidden");
+      });
+
+      // Réinitialiser le formulaire pour un nouveau projet
+      function resetProjectForm() {
+        document.getElementById("form-title").textContent = "Créer un nouveau projet";
+        document.getElementById("submit-btn").textContent = "✅ Créer le projet";
+        document.getElementById("project-id").value = "";
+        document.getElementById("project-name").value = "";
+        document.getElementById("project-description").value = "";
+        document.getElementById("project-deadline").value = "";
+        document.getElementById("project-progress").value = "0";
+        // L'input file ne peut pas être réinitialisé programmatiquement pour des raisons de sécurité
+        // On doit utiliser reset() sur le formulaire entier
+        //document.getElementById("project-form").reset();
+      }
+
+      // Charger le projet à éditer dans le formulaire
+      window.loadProjectForEdit = async function(projectId) {
+        try {
+          // Charger les détails du projet
+          const project = await getProject(projectId);
+          
+          // Mettre à jour le titre et le bouton du formulaire
+          document.getElementById("form-title").textContent = "Modifier le projet";
+          document.getElementById("submit-btn").textContent = "✅ Mettre à jour";
+          
+          // Remplir le formulaire avec les données du projet
+          document.getElementById("project-id").value = projectId;
+          document.getElementById("project-name").value = project.name;
+          document.getElementById("project-description").value = project.description;
+          
+          // Formater la date pour l'input date
+          if (project.deadline) {
+            const deadlineDate = new Date(project.deadline);
+            const formattedDate = deadlineDate.toISOString().split('T')[0];
+            document.getElementById("project-deadline").value = formattedDate;
+          }
+          
+          document.getElementById("project-progress").value = project.progress || 0;
+          
+          // Afficher le formulaire
+          document.getElementById("project-form-section").classList.remove("hidden");
+        } catch (error) {
+          console.error("Erreur lors du chargement du projet:", error);
+          alert("Erreur lors du chargement du projet: " + error.message);
+        }
+      };
+    </script>
+  </body>
+</html>
