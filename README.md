@@ -20,7 +20,7 @@ Ce backend fournit une API RESTful pour l'application de gestion des tâches. Il
 
 1. Clonez le dépôt
 ```
-git clone <votre-dépôt>
+git clone https://github.com/djedjelc/Gestion-des-projets-d--quipe
 ```
 
 2. Installez les dépendances
